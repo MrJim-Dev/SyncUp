@@ -513,8 +513,7 @@ const CreateEventForm = ({
       //   } else {
       //     setValue(key as keyof EventFormValues, event[key] as any);
       //   }
-      // }); 
-
+      // });
 
       setOnsitePayment(event.onsite || false);
 
@@ -846,7 +845,6 @@ const CreateEventForm = ({
         certificate_background: certificateBackgroundUrl,
       };
 
-      // console.log("Complete Form Data:", completeFormData);
 
       const { data, error } = event
         ? await updateEvent(event.eventid!, completeFormData)
@@ -854,36 +852,6 @@ const CreateEventForm = ({
 
       if (data) {
         const eventId = event ? event.eventid! : data[0].eventid;
-
-        // Delete existing signatories if updating
-        if (event) {
-          const { error: deleteError } = await supabase
-            .from("event_signatories")
-            .delete()
-            .eq("event_id", eventId);
-          if (deleteError) {
-            console.error("Error deleting existing signatories:", deleteError);
-            toast.error("Error updating signatories. Please try again.");
-            return;
-          }
-        }
-
-        // Insert new signatories
-        for (const signatory of signatoriesData) {
-          const { error: signatoryError } = await supabase
-            .from("event_signatories")
-            .insert({
-              event_id: eventId,
-              name: signatory.name,
-              signature: signatory.signature,
-              position: signatory.position,
-            });
-          if (signatoryError) {
-            console.error("Error saving signatory:", signatoryError);
-            toast.error("Error saving signatory. Please try again.");
-            return;
-          }
-        }
 
         // Auto-register creator if creating a new event
         if (!event) {
@@ -943,7 +911,10 @@ const CreateEventForm = ({
           event ? "Event was updated successfully." : "Event was created successfully."
         );
         window.location.href = `/e/${event ? event.eventslug : completeFormData.eventslug}`;
+
+        // Reset form and signatories state
         reset();
+        setSignatories([]); // Reset signatories after form submission
       } else if (error) {
         toast.error(
           error.message ||

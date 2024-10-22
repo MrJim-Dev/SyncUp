@@ -161,40 +161,52 @@ export default function EventsTableUser({
     {
       name: "Status",
       selector: (row: Event) => row.status,
-      cell: (row: Event) => (
-        <div className="relative">
-        <select
-          value={row.status}
-          onChange={(e) => handleStatusChange(row.eventid, e.target.value)}
-          className={`text-center bg-charleston cursor-pointer rounded-2xl border-2 px-4 py-1  text-xs 
-            ${row.status === "Ongoing"
-                ? "bg-yellow-600/25 text-yellow-300 border-yellow-500 focus:border-yellow-500 focus:outline-none focus:ring-yellow-500"
-                : row.status === "Open"
-                  ? "bg-green-600/25 text-green-300 border-green-700 focus:border-green-700 focus:outline-none focus:ring-green-700"
-                  : "bg-red-600/25 text-red-300 border-red-700  focus:border-red-700 focus:outline-none focus:ring-red-700"
-            }`}        >
-          <option value="Open">Open</option>
-          <option value="Ongoing">Ongoing</option>
-          <option value="Closed">Closed</option>
-        </select>
-        <style jsx>{`
-                select {
-                  appearance: none; /* Removes default styling including arrow */
-                  background-image: none; /* Ensures no background images like arrow */
-                  outline: none; /* Removes the blue outline */
-                }
-
-                select option {
-                  background-color: #2a2a2a; /* Option background color */
-                  color: #ffffff; /* Option text color */
-                  text-align: center; /* Ensures text alignment inside the option */
-                  margin: 0; /* Removes any default margin */
-                }
+      cell: (row: Event) => {
+        // Normalize the status value
+        const status = row.status ? row.status.trim().toLowerCase() : "";
+    
+        return (
+          <div className="relative">
+            <select
+              value={row.status}
+              onChange={(e) => handleStatusChange(row.eventid, e.target.value)}
+              className={`text-center cursor-pointer rounded-2xl border-2 px-4 py-1 text-xs 
+                ${
+                  status === "ongoing"
+                    ? "bg-yellow-600/25 text-yellow-300 border-yellow-500 focus:border-yellow-500 focus:ring-yellow-500"
+                  : status === "open"
+                    ? "bg-green-600/25 text-green-300 border-green-700 focus:border-green-700 focus:ring-green-700"
+                  : status === "closed"
+                    ? "bg-red-600/25 text-red-300 border-red-700 focus:border-red-700 focus:ring-red-700"
+                  // Default styling if status doesn't match expected values
+                  : "bg-green-600/25 text-green-300 border-green-700 focus:border-green-700 focus:ring-green-700"
+                }`}
+            >
+              <option value="Open">Open</option>
+              <option value="Ongoing">Ongoing</option>
+              <option value="Closed">Closed</option>
+            </select>
+            <style jsx>{`
+              select {
+                appearance: none;
+                background-image: none;
+                outline: none;
+                background-color: transparent;
+              }
+    
+              select option {
+                background-color: #2a2a2a;
+                color: #ffffff;
+                text-align: center;
+                margin: 0;
+              }
             `}</style>
-        </div>
-      ),
+          </div>
+        );
+      },
       sortable: true,
     },
+    
     {
       name: "",
       cell: (row: Event) => (

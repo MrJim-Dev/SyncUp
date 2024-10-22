@@ -298,31 +298,44 @@ const NewsletterCreation: React.FC<NewsletterCreationProps> = ({
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <div className="flex flex-col space-y-4">
               <input
-                className="focus:ring-primary-light w-full rounded border bg-charleston p-3 text-sm text-white placeholder-gray-400 border-primary focus:ring"
+                className="focus:ring-primary-light w-full rounded border border-primary bg-charleston p-3 text-sm text-white placeholder-gray-400 focus:ring"
                 type="text"
                 placeholder="Subject*"
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
               />
-              <RichTextEditor
-                value={editorState}
-                onChange={setEditorState}
-                className="h-40 rounded border border-primary text-white"
-                styles={{
-                  root: {
-                    backgroundColor: "#2a2a2a",
-                    color: "#ffffff",
-                  },
-                  toolbar: {
-                    backgroundColor: "#2a2a2a",
-                    borderColor: "#444444",
-                  },
-                  toolbarControl: {
-                    backgroundColor: "#2a2a2a",
-                    "&:hover": { backgroundColor: "#3a3a3a" },
-                  },
-                }}
-              />
+              <div
+                className="flex flex-col space-y-4"
+                style={{ minHeight: "200px", height: "auto" }}
+              >
+                <RichTextEditor
+                  value={editorState}
+                  onChange={setEditorState}
+                  className="rounded border border-primary text-white"
+                  styles={{
+                    root: {
+                      backgroundColor: "#2a2a2a",
+                      color: "#ffffff",
+                      minHeight: "200px",
+                      height: "auto",
+                    },
+                    content: {
+                      minHeight: "200px",
+                      height: "auto",
+                      maxHeight: "60vh", // Adjust as needed
+                      overflowY: "auto", // Enables scrolling when content exceeds maxHeight
+                    },
+                    toolbar: {
+                      backgroundColor: "#2a2a2a",
+                      borderColor: "#444444",
+                    },
+                    toolbarControl: {
+                      backgroundColor: "#2a2a2a",
+                      "&:hover": { backgroundColor: "#3a3a3a" },
+                    },
+                  }}
+                />
+              </div>
               <div>
                 <div
                   {...getRootProps()}

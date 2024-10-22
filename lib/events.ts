@@ -375,9 +375,10 @@ export async function deleteEvent(eventId: string) {
       return { data: null, error: { message: deleteError.message } };
     }
 
-    const fileName = eventData.eventphoto.split("/").pop();
-
+    // Check if eventData.eventphoto exists before processing
     if (eventData.eventphoto) {
+      const fileName = eventData.eventphoto.split("/").pop();
+
       const { error: storageError } = await supabase.storage
         .from("event-images")
         .remove([fileName]);
